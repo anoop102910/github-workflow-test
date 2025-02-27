@@ -38,5 +38,5 @@ jobs:
             fi
             git pull origin main
             echo "${{ secrets.ENV_FILE }}" > .env
-            npm ci
-            pm2 restart server.js || pm2 start server.js --name ${github.repository}
+            npm run build
+            npm start
