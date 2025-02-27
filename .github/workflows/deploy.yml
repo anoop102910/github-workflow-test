@@ -31,11 +31,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            mkdir -p /home/ubuntu/projects/${{ github.repository }}
             cd /home/ubuntu/projects/${{ github.repository }}
-            if [ ! -d .git ]; then
-              git clone https://github.com/${{ github.repository }} .
-            fi
             git pull origin main
             echo "${{ secrets.ENV_FILE }}" > .env
             npm run build
