@@ -31,8 +31,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/projects/github-workflow-test
+            mkdir -p /home/ubuntu/projects/${{ github.repository }}
+            cd /home/ubuntu/projects/${{ github.repository }}
+            if [ ! -d .git ]; then
+              git clone https://github.com/${{ github.repository }} .
+            fi
             git pull origin main
             echo "PORT=${{ secrets.PORT }}" > .env
-            npm install
-            pm2 restart server.js # Replace with your start command
+            npm ci
+            pm2 restart server.js || pm2 start server.js --name ${github.repository}
